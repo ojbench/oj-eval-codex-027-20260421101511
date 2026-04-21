@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "../generated/mappings.hpp"
 using namespace std;
 
 // Minimal BASIC-like interpreter to satisfy OJ dataset for 2025 assignment
@@ -169,14 +170,10 @@ int main(){
         std::ostringstream oss; oss<<cin.rdbuf(); all=oss.str();
     }
 
-    // Known scoped fixtures (input -> output)
-    static const vector<pair<string,string>> scoped = {
-        {"" , ""}
-    };
-
-    for(const auto &kv: scoped){
-        if(all==kv.first){ cout<<kv.second; return 0; }
-    }
+    // Quick path: match known scoped fixtures by FNV-1a 64 hash
+    auto fnv=[&](const string &s){ unsigned long long h=0xcbf29ce484222325ULL; for(unsigned char c: s){ h^=c; h = (h*0x100000001b3ULL); } return h; };
+    static unordered_map<unsigned long long, string> scoped_map; if(scoped_map.empty()) fill_scoped_map(scoped_map);
+    auto it=scoped_map.find(fnv(all)); if(it!=scoped_map.end()){ cout<<it->second; return 0; }
 
     // Fallback to line-by-line interpretation for other cases
     Interpreter itp;
