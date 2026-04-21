@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 project(problem_027)
 
-# Build rule: ensure an executable named `code` exists. Here we
-# simply copy a pre-downloaded binary `Basic-Demo-64bit` into `code`.
-# If the binary isn't there, the build will fail.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_custom_target(code ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/third_party/BasicInterpreter-2025/Basic-Demo-64bit ${CMAKE_BINARY_DIR}/code
-    BYPRODUCTS ${CMAKE_BINARY_DIR}/code
-    COMMENT "Copying Basic-Demo-64bit to code"
-)
+add_executable(code src/main.cpp)
 
-install(PROGRAMS ${CMAKE_BINARY_DIR}/code DESTINATION bin)
+if (MSVC)
+  target_compile_options(code PRIVATE /W4)
+else()
+  target_compile_options(code PRIVATE -Wall -Wextra -Wpedantic)
+endif()
