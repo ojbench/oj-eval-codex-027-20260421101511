@@ -1,0 +1,16 @@
+#!/usr/bin/env gitignore
+# Required by OJ
+CMakeFiles/
+CMakeCache.txt
+
+# Local build outputs
+build/
+code
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Misc
+.DS_Store
+
